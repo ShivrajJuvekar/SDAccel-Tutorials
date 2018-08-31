@@ -1,46 +1,51 @@
 <table style="width:100%">
   <tr>
-    <th width="100%" colspan="6"><img src="https://www.xilinx.com/content/dam/xilinx/imgs/press/media-kits/corporate/xilinx-logo.png" width="30%"/><h1>SDAccel Development Environment Getting Started Tutorial</h2>
+    <th width="100%" colspan="6"><img src="https://www.xilinx.com/content/dam/xilinx/imgs/press/media-kits/corporate/xilinx-logo.png" width="30%"/><h1>SDAccel 環境チュートリアル: 入門</h2>
 </th>
   </tr>
   <tr>
-    <td align="center"><a href="README.md">Introduction</td>
-    <td align="center"><a href="lab-1-introduction-to-the-sadccel-developmentenvironment.md">Lab 1: Introduction to the SDAccel Development Environment</td>
-    <td align="center">Lab 2: Introduction to the SDAccel Makefile</a></td>
+    <td align="center"><a href="README.md">はじめに</td>
+    <td align="center"><a href="lab-1-introduction-to-the-sadccel-developmentenvironment.md">演習 1: SDAccel 開発環境の概要</td>
+    <td align="center">演習 2: SDAccel makefile の概要</a></td>
   </tr>
 </table>
 
-## Lab 2: Introduction to the SDAccel Makefile  
+## 演習 2: SDAccel makefile の概要  
 
-The following lab uses an example from the Xilinx® SDAccel™ Example Github repository, which can be found [here](https://github.com/Xilinx/SDAccel_Examples).
+この演習では、[ザイリンクス GitHub リポジトリ](https://github.com/Xilinx/SDAccel_Examples)からの SDAccel™ サンプル デザインを使用します。
 
 <details>
-<summary><strong>Step 1: Preparing and Setting up the SDAccel Environment</strong></summary>
+<summary><strong>手順 1: SDAccel 環境の準備と設定</strong></summary>
 
-In this step, you will set up SDx™ to run in command line, and clone the Github repository for SDAccel™.  
+この手順では、SDx™ をコマンド ラインで実行できるように設定し、SDAccel の GitHub リポジトリをクローンします。  
 
-  1. Launch a terminal and source the settings scripts found in the SDx environment using the command:
-     ``source <SDx_install_location>/<version>/settings64.csh
-     ``
-     or
-     ``source <SDx_install_location>/<version>/settings64.sh
-     ``
-     This allows you to run the SDx command lines without the need to use the GUI.  
+  1. ターミナルを起動し、次のコマンドを使用して SDx 環境にある設定スクリプトを読み込みます。
+     ```
+     source <SDx_install_location>/<version>/settings64.csh
+     ```
+     または
+     ```
+     source <SDx_install_location>/<version>/settings64.sh
+     ```
+     これにより、GUI を使用しなくても SDx コマンド ラインを実行できるようになります。  
 
-  2. If you downloaded the SDAccel examples through the SDx IDE, as described in lab 1, then you can access the files from that location. On Linux the files are downloaded to `/home/<user>/.Xilinx/SDx/<version>/sdaccel_examples/` to a workspace of your choice using the command:
-     ``git clone https://github.com/Xilinx/SDAccel_Examples <workspace>/examples
-     ``
-     >**:pushpin: NOTE:**  This Github repository totals around 400MB in size. Make sure you have sufficient space on a local or remote disk to ensure that it can be completely downloaded.  
+  2. 演習 1 で説明されているように SDx IDE で SDAccel サンプルをダウンロードした場合は、その場所からファイルにアクセスできます。Linux では、ファイルは `/home/<user>/.Xilinx/SDx/<version>/sdaccel_examples/` にダウンロードされています。ファイルをワークスペースにダウンロードするには、次のコマンドを使用します。
+     ```
+     git clone https://github.com/Xilinx/SDAccel_Examples <workspace>/examples
+     ```
+     >**:pushpin: 注記:** この GitHub リポジトリの容量は約 400 MB です。ローカルまたはリモート ディスクにすべてを完全にダウンロードするのに十分な容量があるかどうかを確認してください。  
 
-  3. Once the download is complete, navigate to the `vadd` directory in the SDAccel example using the following command:  
-     ``cd <workspace>/examples/getting_started/misc/vadd``
+  3. ダウンロードが完了したら、次のコマンドを使用して SDAccel サンプルの `vadd` ディレクトリに移動します。  
+     ```
+     cd <workspace>/examples/getting_started/misc/vadd
+     ```
 
-     In this directory, run the `ls` command and view the files. You should see the following contents:
+     このディレクトリで `ls` コマンドを実行し、ファイルを確認します。次のものが含まれているはずです。
      ````
      [sdaccel@localhost vadd ]$ ls
      Makefile    README.md    description.json src
      ````
-     If you run the `ls` on the `src` directory, you should see the following:
+     `src` ディレクトリで `ls` を実行した場合は、次のように表示されます。
      ````
      [sdaccel@localhost vadd ]$ ls src  
      host.cpp    krnl_vadd.cl    vadd.h  
@@ -48,21 +53,21 @@ In this step, you will set up SDx™ to run in command line, and clone the Githu
 </details>
 
 <details>
-<summary><strong>Step 2: Initial Design and Makefile Exploration</strong></summary>  
+<summary><strong>手順 2: 初期デザインおよび makefile の確認</strong></summary>  
 
-  1. The vadd directory contains the Makefile file, which you will use to compile the design in both Hardware and Software Emulation, as well as to generate a System Run.
+  1. vadd ディレクトリには、デザインをハードウェアおよびソフトウェア エミュレーションの両方でコンパイルして、システム run を生成するために使用する makefile ファイルが含まれます。
 
-  2. Open the Makefile in a text editor. View the content and become familiar with how it is written. Makefiles are written in a bash style syntax.  
-     >**:pushpin: NOTE:** The file itself makes references to generic makefiles that are used by all the Github example designs.  
+  2. テキスト エディターで makefile を開きます。内容を確認し、どのように記述されているかを見てみます。makefile は bash 形式の構文で記述されています。  
+     >**:pushpin: 注記:** このファイル自体は、すべての GitHub サンプル デザインで使用される汎用 makefile を参照しています。  
 
-  3. The first few lines contain `include` statements for other generic makefiles that are used by all the examples.  
+  3. 最初の数行には、すべてのサンプルで使用されるほかの汎用 makefile の `include` 文が含まれます。  
      ````
      COMMON_REPO:=../../../  
      include $(COMMON_REPO)/utility/boards.mk  
      include $(COMMON_REPO)/libs/xcl2/xcl2.mk  
      include $(COMMON_REPO)/libs/opencl/opencl.mk  
      ````
-  4. Open the `../../../utility/boards.mk` file. This makefile contains the flags and command line compiler info needed to build the host and source code.   
+  4. `../../../utility/boards.mk` ファイルを開きます。この makefile には、ホストおよびソース コードをビルドするのに必要なオプションおよびコマンド ライン コンパイラ情報が含まれます。   
      ````
      # By Default report is set to none, no report will be generated  
      # 'estimate' for estimate report generation  
@@ -77,9 +82,9 @@ In this step, you will set up SDx™ to run in command line, and clone the Githu
      CLFLAGS += --report $(REPORT)  
      endif
      ````
-     `REPORT` is an input flag (parameter) for the `make` command in the terminal. Notice that the `CLFLAGS` is building a long list of `xocc` command line flags to be used.  
+     `REPORT` は `make` コマンドの入力オプション (パラメーター) です。`CLFLAGS` は使用される `xocc` コマンド ライン オプションをリストします。  
 
-  5. Scroll down to line 54 and you will see:  
+  5. 54 行目までスクロールダウンします。  
      ````
         # By default build for hardware can be set to  
         #   hw_emu for hardware emulation  
@@ -90,29 +95,31 @@ In this step, you will set up SDx™ to run in command line, and clone the Githu
         # By default only have one device in the system  
         NUM_DEVICES:=1  
      ````
-     Here, `TARGETS` defines what default build to have (if not specified in the makefile command line). By default, it is set to `hw` (System build). You will be setting this value as desired when working on your own design. Lastly, you can define the number of devices the machine uses that contain the board you selected. Generally, one device is fine to start, but you can change this if your design requires more.  
+     `TARGETS` はデフォルト ビルド (makefile コマンド ラインで指定しない場合) を定義します。デフォルトでは、`hw` (システム ビルド) に設定されています。この値をデザインに合わせて設定します。また、選択したボードを含め、マシンで使用されるデバイス数を定義できます。通常は、1 つのデバイスを指定して始めるので十分ですが、必要に応じて数を増やすことができます。  
 
-  6. Close the boards.mk file and refocus on the Makefile. Looking at line 9 and beyond, notice that this file handles the majority of where the source code is located, and names the kernel and application executables.  
+  6. boards.mk ファイルを閉じて、makefile を再度確認します。9 行目以降では、src ディレクトリにあるものが処理され、カーネルおよびアプリケーション実行ファイルが指定されています。  
 
-  7. Finally, open the `../../../utility/rules.mk file`. This file is where all the setup items from the previous makefiles are handled into creating the xocc and the xcpp (gcc) command line arguments. Explore this file until you feel comfortable with what it does. Key areas to focus are labeled with `define make_exe` (line 34) and `define make_xclbin` (line 107).
+  7. `../../../utility/rules.mk file` ファイルを開きます。このファイルでは、makefile で設定されたアイテムすべてが処理され、xocc および xcpp (gcc) コマンド ライン引数が作成されます。このファイルを詳細に確認し、内容を理解してください。特に、`define make_exe` (34 行目) および `define make_xclbin` (107 行目) に注目してください。
 
 </details>
 
 <details>
-<summary><strong>Step 3: Running Software Emulation</strong></summary>
+<summary><strong>手順 3: ソフトウェア エミュレーションの実行</strong></summary>
 
-Now that you understand parts of the makefile construction, it is time to compile the code to run Software Emulation.  
+ここまでで makefile の構成部分を理解したので、次はソフトウェア エミュレーションを実行するコードをコンパイルします。  
 
-  1. To compile the application for Software Emulation, run the following command:  
-     `make all REPORT=estimate TARGETS=sw_emu DEVICES=xilinx_kcu1500_dynamic_5_0`  
+  1. 次のコマンドを実行して、ソフトウェア エミュレーション用にアプリケーションをコンパイルします。  
+     ```
+     make all REPORT=estimate TARGETS=sw_emu DEVICES=xilinx_kcu1500_dynamic_5_0
+     ```  
 
-     The three files that are generated are:  
+     次の 3 つのファイルが生成されます。  
 
-     * vadd (host executable)  
-     * `xclbin/krnl_vadd.sw_emu.xilinx_kcu1500_dynamic.xclbin` (binary container)  
-     * A system estimate report
+     * vadd (ホスト実行ファイル)  
+     * `xclbin/krnl_vadd.sw_emu.xilinx_kcu1500_dynamic.xclbin` (バイナリ コンテナー)  
+     * システム見積もりレポート
 
-     To double check that these files were generated, run an `ls` command in the directory and you should get the following:  
+     これらのファイルが生成されていることを確認のため、ディレクトリで `ls` コマンドを実行します。次のように表示されるはずです。  
      ```
       [sdaccel@localhost vadd]$ ls   
       description.json
@@ -127,16 +134,20 @@ Now that you understand parts of the makefile construction, it is time to compil
       krnl_vadd.sw_emu.xilinx_kcu1500_dynamic.xo
      ```
 
-  2. To run the application in emulation, run the following command:  
-     `emconfigutil --platform xilinx_kcu1500_dynamic_5_0 --nd 1`
-     The `emconfigutil` tool generates a `emconfig.json` file, which contains the information about the target device. However, from the Github repository, the makefile is how you will generate it. Run this command:
-     `make check PROFILE=yes TARGETS=sw_emu DEVICES=xilinx_kcu1500_dynamic_5_0`  
+  2. 次のコマンドを実行して、アプリケーションのエミュレーションを実行します。  
+     ```
+     emconfigutil --platform xilinx_kcu1500_dynamic_5_0 --nd 1
+     ```
+     `emconfigutil` ツールにより、ターゲット デバイスに関する情報を含む `emconfig.json` ファイルが生成されます。ただし、GitHub リポジトリからは makefile で生成されます。次のコマンドを実行します。
+     ```
+     make check PROFILE=yes TARGETS=sw_emu DEVICES=xilinx_kcu1500_dynamic_5_0
+     ```  
 
-     >**:pushpin: NOTE:**  Make sure that the `DEVICES` specified above is the same as what was used for compilation in Step 1.  
+     >**:pushpin: 注記:** 指定されている `DEVICES` が手順 1 のコンパイルに使用されたものと同じであることを確認してください。  
 
-     In this flow, this will run the previous command, and also run the application.  
+     このフローでは、これにより前のコマンドが実行されて、アプリケーションも実行されます。  
 
-  3. If the application runs successfully, the following messages appear in the terminal:  
+  3. アプリケーションの実行に問題がない場合は、ターミナルに次のメッセージが表示されます。  
       ```
       [sdaccel@localhost vadd]$ make check TARGETS=sw_emu DEVICES=xilinx_kcu1500_dynamic_5_0  
       <install location>/SDx/2017.4/bin/emconfigutil --platform xilinx_kcu1500_dynamic_5_0 --nd 1  
@@ -173,52 +184,62 @@ Now that you understand parts of the makefile construction, it is time to compil
       TEST PASSED  
      ```
 
-  4. If you want to generate additional reports you will need to either set environment variables or create a file called `sdaccel.ini` with appropriate information and permissions.
-     In this tutorial, you will create the `sdaccel.ini` file in the `vadd` directory, and add the following contents:  
+  4. 追加のレポートを生成するには、環境変数を設定するか、`sdaccel.ini` というファイルを正しい情報と権限で作成する必要があります。
+     このチュートリアルでは、`vadd` ディレクトリに `sdaccel.ini` ファイルを作成して、次の内容を追加します。  
      ```
       [Debug]  
       timeline_trace = true  
       profile = true  
      ```
 
-  5. Again, run the command:  
-     `make check PROFILE=yes TARGETS=sw_emu DEVICES=xilinx_kcu1500_dynamic_5_0`  
-     After the application completes, there is an additional timeline trace file called sdaccel_timeline_trace.csv. To view this trace report in the GUI, convert the CSV file into a WDB file using this command:  
-     `sdx_analyze trace sdaccel_timeline_trace.csv`  
+  5. 次のコマンドを実行します。  
+     ```
+     make check PROFILE=yes TARGETS=sw_emu DEVICES=xilinx_kcu1500_dynamic_5_0
+     ```  
+     アプリケーションの実行が終了すると、sdaccel_timeline_trace.csv というタイムライン トレース ファイルも作成されます。このトレース レポートを GUI で確認するには、次のコマンドを使用して CSV ファイルを WDB ファイルに変換します。  
+     ```
+     sdx_analyze trace sdaccel_timeline_trace.csv
+     ```  
 
-  6. The application generates a profiling summary report called `sdaccel_profile_summary` in CSV format.  
-     You can convert this into a report shown in the Lab 1 profile summary and explore it in the SDx™ IDE. To do this, run the following command:  
-     `sdx_analyze profile sdaccel_profile_summary.csv`  
-     This generates an `sdaccel_profile_summary.xprf` file. To view this report, open the SDx IDE, select **File > Open File**, and click the file from the menu. The report is shown below.  
-     >**:pushpin: NOTE:** For viewing these reports, you do not need to use the workspace you previously used in Lab 1. You can use this command to create a workspace locally for viewing these reports: `sdx -workspace ./lab2`. You may also need to close the Welcome Window to view the report.  
+  6. アプリケーションで `sdaccel_profile_summary` という CSV 形式のプロファイリング サマリ レポートが生成されます。  
+     これを演習 1 のプロファイル サマリで示したレポートに変換して、SDx IDE で表示できます。これには、次のコマンドを実行します。  
+     ```
+     sdx_analyze profile sdaccel_profile_summary.csv
+     ```  
+     これにより、`sdaccel_profile_summary.xprf` ファイルが生成されます。このレポートを表示するには、SDx IDE を開き、**[File] → [Open File]** をクリックして、ファイルを選択します。次の図に、レポートが表示されたところを示します。  
+     >**:pushpin: 注記:** これらのレポートを表示するのに、演習 1 で使用したワークスペースを使用する必要はありません。`sdx -workspace ./lab2` コマンドを使用して、これらのレポートを表示するためのワークスペースをローカルに作成できます。レポートを表示するために、[Welcome] ウィンドウを閉じる必要があることもあります。  
 
      ![](./images/xci1517374817422.png)  
 
-     >**:pushpin: NOTE:** Software Emulation does not provide all the profiling information (data transfer between kernel and global memory). This information is available in Hardware Emulation and System.  
+     >**:pushpin: 注記:** ソフトウェア エミュレーションでは、すべてのプロファイル情報が含まれるわけではなく、カーネルとグローバル メモリ間のデータ転送に関する情報は含まれません。この情報は、ハードウェア エミュレーションおよびシステムにのみ含まれます。  
 
-  7. The System Estimate report (`system_estimate.xtxt`) is also generated. This is from the `--report` switch used when compiling using the `xocc` command.  
+  7. システム見積もりレポート (`system_estimate.xtxt`) も生成されます。これは `xocc` コマンドで `--report` オプションを指定してコンパイルすると生成されます。  
      ![](./images/kkq1517374817434.png)  
 
-  8. As you did earlier, launch the SDx IDE.
+  8. SDx IDE を起動します。
 
-  9. Select **File > Open File** to locate the `sdaccel_timeline_trace.wdb` file. This opens the report shown in the following figure:  
+  9. **[File] → [Open File]** をクリックし、`sdaccel_timeline_trace.wdb` ファイルを選択します。次の図に示すようなレポートが表示されます。  
      ![](./images/rth1517374817491.png)  
 </details>
 
 <details>
-<summary><strong>Step 4: Running Hardware Emulation</strong></summary>
+<summary><strong>手順 4: ハードウェア エミュレーションの実行</strong></summary>
 
-  1. Now that Software Emulation is complete, you can run Hardware Emulation. To do this without changing the makefile, run the following command:  
-     `make all REPORT=estimate TARGETS=hw_emu DEVICES=xilinx_kcu1500_dynamic_5_0`
-     When you define the `TARGETS` this way, it passes the value and overwrites the default that was set in the makefile.  
-     >**:pushpin: NOTE:** Hardware Emulation takes longer to compile than the Software Emulation.  
-     Next, you can re-run the compiled host application. You do not need to regenerate `emconfig.json` because the device information has not changed. However, the emulation needs to be set for Hardware Emulation.  
+  1. ソフトウェア エミュレーションが終了したので、次はハードウェア シミュレーションを実行します。makefile を変更せずにこれを実行するには、次のコマンドを実行します。  
+     ```
+     make all REPORT=estimate TARGETS=hw_emu DEVICES=xilinx_kcu1500_dynamic_5_0
+     ```
+     `TARGETS` をこのように定義すると、その値が渡されて、makefile で設定されているデフォルトが上書きされます。  
+     >**:pushpin: 注記:** ハードウェア エミュレーションには、ソフトウェア エミュレーションよりも時間がかかります。  
+     
+2. コンパイルされたホスト アプリケーションを再実行します。デバイス情報は変更していないので `emconfig.json` を生成し直す必要はありませんが、エミュレーションをハードウェア エミュレーションに設定する必要があります。次のコマンドを使用してホスト アプリケーションを再実行します。  
+   
+     ```
+     make check TARGETS=hw_emu DEVICES=xilinx_kcu1500_dynamic_5_0
+     ```  
+     >**:pushpin: 注記:** makefile で環境変数が `hw_emu` に設定されます。  
 
-  2. Re-run the host application with the following command:  
-     `make check TARGETS=hw_emu DEVICES=xilinx_kcu1500_dynamic_5_0`  
-     >**:pushpin: NOTE:** The makefile sets the enviornment variable to `hw_emu`.  
-
-  3. The output should be similar to the Software Emulation with the following output.  
+  3. 出力はソフトウェア エミュレーションと類似しており、次のようになります。  
      ```
       [sdaccel@localhost vadd]$ make check TARGETS=hw_emu DEVICES=xilinx_kcu1500_dynamic_5_0  
       /<install location>/SDx/<version>/bin/emconfigutil --platform xilinx_kcu1500_dynamic_5_0 --nd 1  
@@ -251,58 +272,64 @@ Now that you understand parts of the makefile construction, it is time to compil
       TEST PASSED  
      ```
 
-  4. To view the profile summary and timeline trace, run the following commands to convert them for the SDx IDE to read and view the updated information below:  
+  4. 次のコマンドを実行し、プロファイル サマリとタイムライン トレースを SDx IDE で表示できるように変換し、アップデートされた情報を表示します。  
      ```
       sdx_analyze profile sdaccel_profile_summary.csv  
       sdx_analyze trace sdaccel_timeline_trace.csv  
      ```
-     For the Profile Summary, you should see something similar to the following figure.  
+     プロファイル サマリは、次の図のようになります。  
      ![](./images/sdx_makefile_hw_emulation_summary.png)    
 </details>
 
 <details>
-<summary><strong>Step 5: Running System Run</strong></summary>
+<summary><strong>手順 5: システム実行</strong></summary>
 
-  1. To compile for a System Run, run the following command:  
-     `make check TARGETS=hw DEVICES=xilinx_kcu1500_dynamic_5_0`  
-     >**:pushpin: NOTE:** Building for System could take a long time depending on computer resources.  
+  1. 次のコマンドを実行し、システム実行用にコンパイルします。  
+     ```
+     make check TARGETS=hw DEVICES=xilinx_kcu1500_dynamic_5_0
+     ```  
+     >**:pushpin: 注記:** システムのビルドには、コンピューター リソースによって時間がかかることがあります。  
 
-  2. Once the build is complete, prepare the board installation by using the following command:  
-     `xbinst --platform xilinx_kcu1500_dynamic_5_0 -z -d `  
-     Where:  
-     * `--platform` is the platform to be used by the design.  
-     * `-z` archives the board installation files for deployment.  
-     * `-d` is the destination directory to use (Required).  
+  2. ビルドが終了したら、次のコマンドを使用してボードのインストールを準備します。  
+     ```
+     xbinst --platform xilinx_kcu1500_dynamic_5_0 -z -d
+     ```  
+     説明:  
+     * `--platform`: デザインで使用されるプラットフォーム名を指定します。  
+     * `-z`: 運用のためボード インストール ファイルをアーカイブします。  
+     * `-d`: デスティネーション ディレクトリを指定します (必須)。  
+	 
+  3. 終了すると、デザインの運用に必要なファイルおよびスクリプトをすべて含む `xbinst` というフォルダーが作成されます。これには、`install.sh` スクリプトを実行します。このスクリプトにより、適切なライブラリおよびファームウェアがインストールされ、ランタイム環境を設定するための setup.sh が作成されます。  
 
-  3. Once complete, a folder called `xbinst` is created that contains all the files and scripts needed to deploy the design. To do this, run the `install.sh` script. The script installs the appropriate libraries, and firmware, and creates a setup.sh to be used to setup the runtime environment.  
+  4. setup.sh を実行してランタイム環境を準備します。  
+     >**:pushpin: 注記:** setup.sh を実行するには、引き上げられた権限が必要です。  
 
-  4. Run setup.sh to prepare the runtime environment.  
-     >**:pushpin: NOTE:** Running setup.sh requires elevated permissions.  
+  5. システム実行が終了したら、必要に応じてこれをエミュレーションで再実行できます。次のコマンドを再実行します。  
+     ```
+     make check TARGETS=hw_emu DEVICES=xilinx_kcu1500_dynamic_5_0
+     ```  
+     >**:pushpin: 注記:** `TARGET` を `hw` に設定してこのコマンドを実行すると、プラットフォームの検出でランタイム エラーが発生します。  
+     前の手順と同様、プロファイル サマリ、タイムライン トレース、システム見積もりを示すレポートが生成されます。  
+   
 
-  5. With the System Run completed, you can re-run this in emulation if desired. Re-run the following command:  
-     `make check TARGETS=hw_emu DEVICES=xilinx_kcu1500_dynamic_5_0`  
-     >**:pushpin: NOTE:** Running this command with the `TARGET` set to `hw` results in a runtime error on locating a platform.  
-     As in the earlier step, the following reports are generated: profile summary, timeline trace, and system estimates.  
-Notes from Joyce: I am not quite sure the purpose of this step. Why hardware emulation is executed here in the hardware run step? 
 
-
-  6. Use the following commands to convert the profile summary and timeline trace into files that SDx can read:
+  6. 次のコマンドを使用して、プロファイル サマリとタイムライン トレースを SDx で読み込むことができるファイルに変換します。
      ```
       sdx_analyze profile sdaccel_profile_summary.csv  
       sdx_analyze trace sdaccel_timeline_trace.csv      
      ```
 </details>
 
-### Summary
+### まとめ
 
-After completing this tutorial, you should be able to do the following:  
+このチュートリアルを終了すると、次ができるようになります。  
 
-  * Set up the SDx™ environment to run all commands in a terminal.  
-  * Clone a Github repository.  
-  * Run the xcpp, xocc, emconfigutil, sdx_analyze profile, sdx_analyze trace commands to generate the application, binary container, and emulation model.  
-  * Write a makefile to compile an OpenCL™ kernel and host code.  
-  * View the generated files from emulation in a text editor or the SDx IDE.  
-  * Set up the environment and deploy the design to be used with the platform.  
+  * SDx 環境を設定し、すべてのコマンドをターミナルで実行。  
+  * GitHub リポジトリをクローン。  
+  * xcpp、xocc、emconfigutil、sdx_analyze profile、sdx_analyze trace コマンドを実行してアプリケーション、バイナリ コンテイナー、エミュレーション モデルを生成。  
+  * makefile を記述して OpenCL™ カーネルおよびホスト コードをコンパイル。  
+  * エミュレーションから生成したファイルをテキスト エディターまたは SDx IDE で表示。  
+  * 環境を設定し、デザインをプラットフォームで使用されるように運用。  
 </details>
 
   <hr/>

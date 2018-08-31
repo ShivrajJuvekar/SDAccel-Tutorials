@@ -1,25 +1,25 @@
 <table style="width:100%">
   <tr>
 
-<th width="100%" colspan="6"><img src="https://www.xilinx.com/content/dam/xilinx/imgs/press/media-kits/corporate/xilinx-logo.png" width="30%"/><h1>SDAccel Development Environment Tutorials</h2>
+<th width="100%" colspan="6"><img src="https://www.xilinx.com/content/dam/xilinx/imgs/press/media-kits/corporate/xilinx-logo.png" width="30%"/><h1>SDAccel 環境チュートリアル</h2>
 </th>
 
   </tr>
   <tr>
-    <td width="17%" align="center">Overview</a></td>
-    <td width="16%" align="center"><a href="./getting-started-tutorial/README.md">SDAccel™ Development Environment Getting Started Tutorial</a></td>
+    <td width="17%" align="center">概要</a></td>
+    <td width="16%" align="center"><a href="./getting-started-tutorial/README.md">SDAccel™ 環境チュートリアル: 入門</a></td>
   </tr>
 </table>
 
-## Overview
+## 概要
 
-The Xilinx® SDAccel™ Development Environment is part of the SDx™ Development Toolchain. This toolchain allows you to create FPGA accelerated designs using C/C++, OpenCL C, or RTL programming languages. You can create these designs in the SDx GUI environment or through a Makefile flow.
+ザイリンクス SDAccel™ 開発環境は、SDx™ 開発ツールチェーンの一部です。このツールチェーンでは、C/C++、OpenCL C、または RTL を使用して FPGA アクセラレーション デザインを作成できます。これらのデザインは、SDx GUI 環境または makefile フローで作成できます。
 
-### Hardware and Software Requirements  
+### ハードウェアおよびソフトウェア要件  
 
-Refer to the Vivado Design Suite User Guide: Release Notes, Installation, and Licensing ([UG973](https://www.xilinx.com/cgi-bin/docs/rdoc?v=2018.2;t=vivado+release+notes)) for a complete list and description of the system and software requirements for the Vivado® Design Suite.
+Vivado® Design Suite のシステムおよびソフトウェア要件は、『Vivado Design Suite ユーザー ガイド: リリース ノート、インストール、およびライセンス』 ([UG973](https://japan.xilinx.com/cgi-bin/docs/rdoc?v=2018.2;t=vivado+release+notes)) を参照してください。
 
-### Related information
-<a href="./getting-started-tutorial/README.md">SDAccel™ Development Environment Getting Started Tutorial</a>  
+### 関連情報
+<a href="./getting-started-tutorial/README.md">SDAccel™ 環境チュートリアル: 入門</a>  
 <hr/>
 <p align="center"><sup>Copyright&copy; 2018 Xilinx</sup></p>

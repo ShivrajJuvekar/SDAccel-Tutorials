@@ -1,225 +1,225 @@
 <table style="width:100%">
   <tr>
-    <th width="100%" colspan="6"><img src="https://www.xilinx.com/content/dam/xilinx/imgs/press/media-kits/corporate/xilinx-logo.png" width="30%"/><h1>SDAccel Development Environment Getting Started Tutorial</h2>
+    <th width="100%" colspan="6"><img src="https://www.xilinx.com/content/dam/xilinx/imgs/press/media-kits/corporate/xilinx-logo.png" width="30%"/><h1>SDAccel 環境チュートリアル: 入門</h2>
 </th>
   </tr>
   <tr>
-    <td align="center"><a href="README.md">Introduction</td>
-    <td align="center">Lab 1: Introduction to the SDAccel Development Environment</td>
-    <td align="center"><a href="lab-2-introduction-to-the-sdaccel-makefile.md">Lab 2: Introduction to the SDAccel Makefile</a></td>
+    <td align="center"><a href="README.md">はじめに</td>
+    <td align="center">演習 1: SDAccel 開発環境の概要</td>
+    <td align="center"><a href="lab-2-introduction-to-the-sdaccel-makefile.md">演習 2: SDAccel makefile の概要</a></td>
   </tr>
 </table>
 
-## Lab 1: Introduction to the SDAccel Development Environment  
+## 演習 1: SDAccel 開発環境の概要  
 
-This lab uses an example from the Xilinx® SDAccel™ Example GitHub repository, which can be found [here](https://github.com/Xilinx/SDAccel_Examples). This lab demonstrates two different flows: steps 1-3 explain the GUI flow, while step 4 explains the Makefile flow.
+この演習では、ザイリンクス GitHub リポジトリからの SDAccel™ サンプル デザインを使用します。2 種類のフローを示します。手順 1 ～ 3 では GUI フロー、手順 4 では makefile フローを説明します。
 
 <details>
-<summary><strong>Step 1: Creating an SDAccel Project From a Github Example</strong></summary>
+<summary><strong>手順 1: GitHub サンプルからの SDAccel プロジェクトの作成</strong></summary>
 
-  1. Use the `sdx` command to launch SDx&trade; in a Terminal window in Linux.
-     The Workspace Launcher dialog box appears.  
+  1. Linux のターミナル ウィンドウで `sdx` コマンドを使用して SDx&trade; を起動します。
+     ワークスペースを指定するダイアログ ボックスが表示されます。  
 
      ![](./images/dew1517374817420.png)  
 
-  2. Select a location for your workspace; this is where the project will reside.  
+  2. ワークスペースのディレクトリを選択します。このディレクトリにプロジェクトが作成されます。  
 
-  3. Click **OK**.   
-     The SDx Welcome Window opens. Note that the Welcome Window opens when you use the tool for the first time, or by selecting **Help > Welcome**.
+  3. **[OK]** をクリックします。   
+     SDx の [Welcome] ウィンドウが開きます。[Welcome] ウィンドウは、ツールを初めて起動した場合に表示されます。**[Help] → [Welcome]** をクリックして開くこともできます。
 
      ![](./images/welcome_window.png)  
 
-  4. In the SDx Welcome window, click **Create SDx Project**.  
-     The Create a New SDx Project dialog box opens.  
+  4. SDx の [Welcome] ウィンドウで **[Create SDx Project]** をクリックします。  
+     New SDx Project ウィザードが開きます。  
 
      ![](./images/application_project.png)
 
-  5. Select **Application** and click **Next**.
-     The New SDx Project dialog box opens.
+  5. **[Application]** をオンにし、**[Next]** をクリックします。
+     [Create a New SDx Project] ページが開きます。
 
      ![](./images/project_name.PNG)  
 
-  6. Specify the name and location for your project. For this project, type `vadd` into the Project Name field and select **Use default location**.
-     The Hardware Platform dialog box opens.  
+  6. プロジェクトの名前とディレクトリを指定します。このプロジェクトでは、[Project name] に「`vadd`」と入力し、**[Use default location]** をオンにして、**[Next]** をクリックします。
+     [Platform] ページが開きます。  
 
      ![](./images/hardware_platform_dialog.PNG)
 
-  7. Select the `xilinx_kcu1500_dynamic_5_0` platform and click **Next**.  
-     The selection of the hardware platform defines the project as an SDAccel project or an SDSoC project. In this case you have selected an SDAccel acceleration platform, so the project will be an SDAccel project.
+  7. `xilinx_kcu1500_dynamic_5_0` プラットフォームを選択して **[Next]** をクリックします。  
+     選択したプラットフォームによって、プロジェクトが SDAccel プロジェクトになるか SDSoC プロジェクトになるかが決まります。ここでは SDAccel アクセラレーション プラットフォームを選択したので、プロジェクトは SDAccel プロジェクトになります。
 
-     The System Configuration window opens. This window is where you define what type of system and runtime to use.  
+     [System Configuration] ページが開きます。このページでは、使用するシステムのタイプとランタイムを定義します。  
 
      ![](./images/gba1517357172448.png)  
 
-  8. For this lab, use the system configuration defaults, which are set to Linux and OpenCL.   
+  8. この演習では、デフォルト設定 ([System configuration] は [Linux]、[Runtime] は [OpenCL]) を使用します。   
 
-  9. Click **Next**.  
-     The Templates window opens, showing a list of possible templates that you can use to get started in building an SDAccel project. Unless you have already downloaded other SDx examples, you should only see Empty Application and Vector Addition. In this lab, you will be using the Vector Addition from the Github repository. To do this you need to download the examples.  
+  9. **[Next]** をクリックします。  
+     [Templates] ページが開き、SDAccel プロジェクトの作成に使用可能なテンプレートがリストされます。SDx のサンプルをダウンロードしていない場合は、[Empty Application] と [Vector Addition] のみが表示されます。この演習では、GitHub リポジトリの Vector Addition を使用します。これには、まずサンプルをダウンロードする必要があります。  
 
      ![](./images/faq1517357172427.png)  
 
-  10. Click **SDx Examples**.  
-      The SDx Examples window shows that you can download both the SDAccel Examples and SDSoC Examples.  
+  10. **[SDx Examples]** ボタンをクリックします。  
+      表示される [SDx Examples] ダイアログ ボックスから、SDAccel サンプルと SDSoC サンプルの両方をダウンロードできます。  
 
       ![](./images/20182_examples1.png)  
 
-  11. Click the **Download** button for the SDAccel Examples and the system will begin to clone the Github repository to the location designated in the Details.  
-      >**:pushpin: NOTE:**  The download can take a while depending on connectivity speeds. The Progress Information dialog will be present until the cloning of the repository is complete.  
+  11. [SDAccel Examples] の **[Download]** ボタンをクリックします。GitHub リポジトリが [Details] に示されているディレクトリにクローンされます。  
+      >**:pushpin: 注記:** ダウンロードには、接続速度によって時間がかかることがあります。[Progress Information] ダイアログ ボックスがリポジトリのクローンが完了するまで表示されます。  
 
-      When the download completes, you will see the SDAccel Examples tree table populated and expanded.  
+      ダウンロードが完了すると、[SDAccel Examples] の下にサンプルがツリー形式でリストされます。  
 
       ![](./images/20182_examples2.png)  
 
-  12. Click **OK** to close the window and go back to the Templates window.  
-      The Templates window is now populated with the SDAccel Github examples.  
+  12. **[OK]** をクリックしてダイアログ ボックスを閉じ、[Templates] ページに戻ります。  
+      [Templates] ページに SDAccel GitHub サンプルが表示されるようになります。  
 
       ![](./images/gmr1517357172462.png)  
 
-  13. Using the Find window, type Vector, and locate the Vector Addition from the Miscellaneous Examples.   
+  13. [Find] フィールドに「Vector」と入力し、[Miscellaneous Examples] の下の [Vector Addition] を選択します。   
 
-  14. Click **Finish**.  
-      The Vector Addition project is created and opened in the SDAccel environment, given the name that you specified for the project. The environment should appear similar to the following figure.
+  14. **[Finish]** をクリックします。  
+      Vector Addition プロジェクトが指定した名前で作成され、SDAccel 環境に開きます。次の図ような環境が表示されるはずです。
 
-      [](./images/vector_add_project.png)
+      ![](./images/vector_add_project.PNG)
 
-      The SDAccel Environment includes the Eclipse-based SDx IDE which you have been working in. As shown in the figure, the default perspective has an arrangement of the Project Explorer view, Project Editor window, and the Outline view across the top, and the Assistant view, the Console view, and Target Connections view across the bottom. Refer to the SDAccel Environment User Guide ([UG1023](https://www.xilinx.com/cgi-bin/docs/rdoc?v=2018.2;d=ug1023-sdaccel-environment-user-guide.pdf)) for more information on the features of the SDx IDE.
+      SDAccel 環境には、Eclipse ベースの SDx IDE (既にここまでの作業で使用) が含まれます。図に示すように、デフォルト パースペクティブには [Project Explorer] ビュー、プロジェクト エディター ウィンドウ、[Outline] ビューが上部に、[Assistant] ビュー、[Console] ビュー、[Target Connections] ビューが下部に表示されます。SDx IDE の機能の詳細は、『SDAccel 環境ユーザー ガイド』 ([UG1023](https://japan.xilinx.com/cgi-bin/docs/rdoc?v=2018.2;d=ug1023-sdaccel-user-guide.pdf)) を参照してください。
 
   </details>
 
 <details>
-<summary><strong>Step 2: Running Software Emulation</strong></summary>
+<summary><strong>手順 2: ソフトウェア エミュレーションの実行</strong></summary>
 
-This step shows you how to run software emulation for a design, by setting Run Configuration settings, opening reports, and showing how to launch Debug. You can find details about reports and Debug in the SDAccel Environment User Guide   ([UG1023](https://www.xilinx.com/cgi-bin/docs/rdoc?v=2018.2;d=ug1023-sdaccel-environment-user-guide.pdf)).  
+この手順では、ソフトウェア エミュレーションを実行する方法を説明します。[Run Configuration] ダイアログ ボックスの設定を指定し、レポートを開いて、デバッグを開始します。レポートおよびデバッグの詳細は、『SDAccel 環境ユーザー ガイド』 ([UG1023](https://japan.xilinx.com/cgi-bin/docs/rdoc?v=2018.2;d=ug1023-sdaccel-user-guide.pdf)) を参照してください。  
 
-  1. To run CPU Emulation, go to Application Project Settings and ensure that Active build configuration is set to Emulation-SW.  
+  1. CPU エミュレーションを実行するため、[Application Project Settings] で [Active build configuration] を [Emulation-SW] に設定します。  
 
      ![](./images/project_settings.png)  
 
-  2. From the Github example, an accelerator already exists for the design. To add a hardware function to a design that does not have one, start by clicking on the Add Hardware Function button: ![](./images/qpg1517374817485.png). This analyzes the C/C++ code and determines functions that can be used for acceleration.  
+  2. GitHub サンプルには、アクセラレータが既にデザインに含まれています。デザインにアクセラレータが含まれていない場合は、[Add Hardware Function] ボタン ![](./images/qpg1517374817485.png) をクリックして追加します。これにより C/C++ コードが解析され、アクセラレーションに使用可能な関数を判断できます。  
 
-  3. Click the Run button: ![](./images/lvl1517357172451.png) to run software emulation. This builds the project before running the emulation.  
+  3. [Run] ボタン ![](./images/lvl1517357172451.png) をクリックしてソフトウェア エミュレーションを実行します。エミュレーション実行前にプロジェクトがビルドされます。  
 
-     >**:pushpin: NOTE:**  The build and emulation process can take a few minutes or longer to complete. In the mean time, open the Run Configurations dialog box to see how you can add specific command line options to customize your build.  
+     >**:pushpin: 注記:** ビルドおよびエミュレーション プロセスには数分以上かかります。この間に、[Run Configurations] ダイアログ ボックスを開き、特定のコマンド ライン オプションを追加してビルドをカスタマイズする方法を説明します。  
 
-  4. Go to the Run menu and select **Run Configurations**.  
+  4. [Run] → **[Run Configurations]** をクリックします。  
 
-  5. Under the Arguments tab, the Program arguments field allows you to add XOCC command line flags and switches. Refer to the SDx Command and Utility Reference Guide ([UG1279](https://www.xilinx.com/cgi-bin/docs/rdoc?v=2018.2;d=ug1279-sdx-command-utility-reference-guide.pdf)) for a description of command options. In this tutorial, no command line arguments are needed for the design to function.  
+  5. [Arguments] タブには、XOCC のコマンド ライン オプションを追加できる [Program arguments] セクションがあります。コマンド オプションの詳細は、『SDx コマンドおよびユーティリティ リファレンス ガイド』 ([UG1279](https://japan.xilinx.com/cgi-bin/docs/rdoc?v=2018.2;d=ug1279-sdx-command-utility-reference-guide.pdf)) を参照してください。このチュートリアルでは、デザインを機能させるのにコマンド ライン引数は必要ありません。  
 
-  6. In the Profile tab, there is a drop-down menu for Generate timeline trace report. You can click on the options to see what types of reports are generated. There is also a box for Enable Profiling in this tab. Close the window without changing anything.  
-     >**:pushpin: NOTE:**  If you make changes to the Run Configurations dialog box, re-run the current emulation step in order to see the changes. You can do this by clicking the **Run** button.  
+  6. [Profile] タブには、[Generate timeline trace report] ドロップダウン リストがあります。オプションをクリックすると、生成されるレポートのタイプを確認できます。このタブには、[Enable Profiling] チェック ボックスもあります。何も変更せずウィンドウを閉じます。  
+     >**:pushpin: 注記:** [Run Configurations] ダイアログ ボックスの設定を変更した場合は、現在のエミュレーション段階を再実行し、変更を反映させる必要があります。これには、**[Run]** ボタンをクリックします。  
 
-  7. The Console window should now show TEST PASSED.   
+  7. [Console] ウィンドウに「TEST PASSED」と表示されるはずです。   
 
-  8. After the emulation run is complete, you can review the Profile Summary and Application Timeline reports for details on further optimizations. In the Assistant window, double-click Profile Summary as shown in the figure.
+  8. エミュレーションの実行が終了したら、[Profile Summary] および [Application Timeline] レポートで最適化の詳細を確認できます。次の図に示すように、[Assistant] ビューで [Profile Summary] をダブルクリックします。
 
      ![](./images/assistant_reports.PNG)
 
-     Here, you can view operations, execution time, bandwidth, and other useful data that you can use to optimize the design. Note that your summary numbers may vary from the following figure.  
+     デザインを最適化するのに使用可能な動作、実行時間、帯域幅などの有益なデータが表示されます。サマリの数値は、次の図とは異なる場合があります。  
 
      ![](./images/qrs1517357172440.png)  
 
-  9. To view the Application Timeline report, in the Assistant window, double-click Application Timeline. This shows a breakdown of the host code and the kernel code, and execution time for each. To zoom into a specific area, click and drag the mouse to the right.
+  9. [Assistant] ビューに [Application Timeline] レポートを表示するには、[Application Timeline] をダブルクリックします。ホスト コードとカーネル コードの内訳とそれぞれの実行時間が表示されます。特定の部分を拡大するには、マウスを右へドラッグします。
 
      ![](./images/cwn1517357172498.png)  
 
-  10. The Profile Summary and Application Timeline present data on how the host code and kernel communicate and process kernel information. Using the Debug feature can help you to step through host-kernel processing to pinpoint issues. In the Project Explorer window double-click **host.cpp** (located in the `Explorer > src` directory) to open the file in the editor.  
+  10. [Profile Summary] および [Application Timeline] には、ホスト コードとカーネル間の通信に関するデータと、カーネルの処理情報が含まれます。[Debug] 機能を使用すると、ホスト カーネルの処理をステップ実行して問題を特定できます。[Project Explorer] ビューで **host.cpp** ([Project Explorer] ビューの `src` ディレクトリ) をダブルクリックし、ファイルをエディターで開きます。  
 
-  11. To run in Debug, you need to set a breakpoint. Setting breakpoints at key points in the execution helps identify problems. To pause the host code right before kernel debug begins, right-click on line 70 in the blue area (see figure below) on the `outBufVec.push_back(buffer_C)` and select Toggle Breakpoint.  
+  11. デバッグを実行するには、ブレークポイントを設定する必要があります。重要ポイントにブレークポイントを設定しておくと、問題を見つけやすくなります。カーネル デバッグの直前でホスト コードを一時停止するには、70 行目 (次の図の青い選択部分) の `outBufVec.push_back(buffer_C)` を右クリックして [Toggle Breakpoint] をクリックします。  
 
       ![](./images/lpy1517374817498.png)  
 
-  12. To run Debug, click the Debug icon: ![](./images/cwo1517357172495.png). A dialog box opens up asking you to switch to that perspective. Click Yes.  
+  12. [Debug] アイコン ![](./images/cwo1517357172495.png) をクリックしてデバッグを実行します。パースペクティブを変更するかどうかを尋ねるダイアログ ボックスが表示されます。[Yes] をクリックします。  
 
-  13. Using Eclipse debugging, you can examine the host and kernel code in more detail. All the controls for step-by-step debugging are in the Run menu or on the main toolbar menu.
+  13. Eclipse デバッグを使用すると、ホストおよびカーネル コードを詳細に検証できます。デバッグをステップ実行するための制御コマンドは、[Run] メニューおよびメイン ツールバーにあります。
 
       ![](./images/20182_debug.png)  
 
-  14. By default, the debugger inserts an automatic breakpoint at the first line of `main`. On the Debugger tab of the Runs Configuration dialog, there is an option to stop on the `main` function which is enabled by default as shown in the figure. This is helpful in case of a problematic function in need of more thorough debugging. Press F8 to resume to the next breakpoint or from the Run menu select Resume.  
+  14. デフォルトでは、`main` の最初の行に自動ブレークポイントが挿入されます。次の図に示すように、[Run Configuration] ダイアログ ボックスの [Debugger] タブに `main` 関数で停止するオプションがあります。これは、問題のある関数をさらに詳細にデバッグする場合に便利な機能です。F8 を押すか、[Run] → [Resume] をクリックして、次のブレークポイントまでデバッグを実行します。  
 
       ![](./images/debug_configuration.PNG)  
 
-  15. After resuming debugging, SDx launches another gdb instance for the kernel code, and it also has a breakpoint at the beginning of the function. This allows for detailed analysis of the kernel and how the data looks being read into the function, and written out to memory. Once the kernel execution is done in gdb, that instance is terminated and you return to the main debugging thread. Press F8 to continue.  
-      >**:pushpin: NOTE:**  The console view still shows the kernel debug outputs. Click the icon ![](./images/gqm1517357172417.png) to go back to the vadd.exe console and see the output from the host code.  
+  15. デバッグを再開すると、SDx でカーネル コード用に別の gdb インスタンスが起動します。これにも関数の始めにブレークポイントが設定されています。これでカーネルが詳細に解析され、データがどのように関数に読み込まれてメモリに書き込まれるのかがわかります。カーネル実行が gdb で終了すると、そのインスタンスが終了し、main デバッグ スレッドに戻ります。F8 キーを押して続行します。  
+      >**:pushpin: 注記:** [Console] ビューにはまだカーネル デバッグ出力が表示されています。![](./images/gqm1517357172417.png) アイコンをクリックして vadd.exe コンソールに戻り、ホスト コードからの出力を確認します。  
 
-  16. Close the Debug Perspective by going to the upper-right of the window where it shows the Debug ![](./images/cwo1517357172495.png) button, right-click, and select **Close**, or use the SDx button ![](./images/sdx_perspective_icon.PNG) to switch to the standard SDx perspective.
+  16. メイン ウィンドウの右上にある [Debug] ボタン ![](./images/cwo1517357172495.png) を右クリックして **[Close]** をクリックし、[Debug] パースペクティブを閉じるか、SDx ボタン ![](./images/sdx_perspective_icon.PNG) をクリックして標準の [SDx] パースペクティブに切り替えます。
 
-  17. Once back into the main SDx Perspective, close all tabs in the center Project Editor window except the Application Project Settings window.
+  17. 標準の [SDx] パースペクティブに戻ったら、中央にあるプロジェクト エディター ウィンドウの [Application Project Settings] 以外のすべてのタブを閉じます。
 
 </details>
 
 <details>
-<summary><strong>Step 3: Running Hardware Emulation</strong></summary>
+<summary><strong>手順 3: ハードウェア エミュレーションの実行</strong></summary>
 
-This step covers running Hardware Emulation feature, as well as looking at the basics of profiling and reports.  
+この手順では、ハードウェア エミュレーション機能を実行する方法と、基本的なプロファイリングとレポートについて説明します。  
 
-  1. To run Hardware Emulation, go to SDx Application Settings and make sure that Active build configuration is set to Emulation-HW, then click Run. This takes some time to complete.  
-     >**:pushpin: NOTE:**  The main difference between Emulation-SW and Emulation-HW is that emulating hardware builds a design that is closer to what is seen on the platform, synthesizing RTL for the kernel code. This means data related to bandwidth, throughput, and execution time are more accurate. This causes the design to take longer to compile.  
+  1. ハードウェア エミュレーションを実行するため、[SDx Application Settings] で [Active build configuration] を [Emulation-HW] に設定し、[Run] をクリックします。これには、少し時間がかかります。  
+     >**:pushpin: 注記:** [Emulation-SW] と [Emulation-HW] の主な違いは、ハードウェア エミュレーションではカーネル コードの RTL が合成され、プラットフォームのものにより近いデザインをビルドできる点です。より正確な帯域幅、スループット、実行時間などに関するデータが使用されます。このため、デザインのコンパイルに時間がかかります。  
 
-  2. In the Assistant tab, open System Estimate under the Emulation-HW configuration.
-     This text report provides information related to kernel information, timing about the design, clock cycles, and area used in the device.
+  2. [Assistant] ビューで [Emulation-HW] の下の [System Estimate] を開きます。
+     このテキスト レポートには、カーネル情報、デザインに関するタイミング、クロック サイクル、デバイスで使用されるエリアなどの情報が示されます。
 
      ![](./images/dzr1517357172472.png)  
 
-  3. In the Reports tab, open Profile Summary. This summary report provides detailed information related to kernel operation, data transfers, and OpenCL™ API calls, as well as profiling information related to the resource usage, and data transfer to/from the kernel/host.
-     >**:pushpin: NOTE:**  The simulation models used in HW Emulation are approximate. Profile numbers shown are just an estimate and might vary from results obtained in real hardware.  
+  3. [Reports] タブで [Profile Summary] を開きます。このサマリ レポートには、カーネル動作、データ転送、OpenCL™ API 呼び出しに関する詳細情報のほか、リソース使用量に関するプロファイル情報、カーネル/ホスト間のデータ転送などに関する詳細な情報が示されます。
+     >**:pushpin: 注記:** ハードウェア エミュレーションで使用されるシミュレーション モデルは近似です。表示されるプロファイルの数値はあくまで見積もりであり、実際のハードウェアの結果とは異なる可能性があります。  
 
      ![](./images/profile_summary_report.png)
 
-  4. Next to the console tab, there is a tab labeled Guidance. This is where unmet checks provide some information on how to optimize the kernel.
+  4. [Console] ビューの横に [Guidance] というビューがあります。このビューには、満たされなかったチェックに対してカーネルの最適化方法に関する情報が含まれます。
 
      ![](./images/guidance_view.PNG)  
 
-     >**:pushpin: NOTE:**  To see other performance optimization techniques and methodologies, refer to the  SDAccel Profiling and Optimization Guide ([UG1207](https://www.xilinx.com/cgi-bin/docs/rdoc?v=2018.2;d=ug1207-sdaccel-optimization-guide.pdf)).  
+     >**:pushpin: 注記:** その他のパフォーマンス最適化手法および設計手法は、『SDAccel 環境プロファイリングおよび最適化ガイド』 ([UG1207](https://japan.xilinx.com/cgi-bin/docs/rdoc?v=2018.2;d=ug1207-sdaccel-optimization-guide.pdf)) を参照してください。  
 
-  5. Open the Application Timeline report.  
-     This report shows the estimated time it takes for the host and kernel to complete the task and provides finer grained information on where bottlenecks can be. In this example, it is iterated twice and this timeline shows the kernel is run twice. Adding a marker, zooming, and expanding signals can help in identifying bottlenecks.  
+  5. [Application Timeline] レポートを開きます。  
+     このレポートは、ホストおよびカーネルがタスクを終了するのにかかる見積もり時間と、どこがボトルネックなのかを詳細に示します。この例では 2 回繰り返され、タイムラインにカーネルが 2 回実行されたことが示されます。マーカーを追加、拡大/縮小、信号を展開すると、ボトルネックを見つけるのに役立ちます。  
 
      ![](./images/pwe1517357172419.png)  
 
-  6. Open the HLS Report by expanding the Emulation-HW tab and then expanding the relevant kernel tab.
-     This report provides detailed information provided by Vivado® HLS on the kernel transformation and synthesis. The tabs at the bottom provide more information on where most of the time is spent in the kernel and other performance related data. Some performance data might include latency and clock period.  
+  6. [Emulation-HW] タブを展開して関連のカーネルのタブを展開し、HLS レポートを開きます。
+     このレポートには、Vivado® HLS からのカーネル変換および合成に関する詳細な情報が表示されます。下のタブには、カーネルで最も時間がかかった場所とその他のパフォーマンスに関するデータが表示されます。パフォーマンス データには、レイテンシおよびクロック周期が含まれる場合もあります。  
 
      ![](./images/ivm1517374817463.png)  
 </details>
 
 <details>
-<summary><strong>Step 4: Makefile Flow</strong></summary>
+<summary><strong>手順 4: makefile フロー</strong></summary>
 
-This step explains the basics of the Makefile flow and how SDx™ uses it. The  
-advantages of using this flow include:  
+この手順では、基本的な makefile フローと SDx での使用方法について説明します。このフローを使用する利点は、次のとおりです。  
+  
 
-  * Easy automation into any system  
-  * Faster turnaround time on small design changes  
+  * システムに簡単にオートメーションを導入  
+  * デザインを少し変更した場合の処理時間の短縮  
 
-To run the makefile flow, do the following:  
+mkefile フローを実行するには、次の手順に従います。  
 
-  1. In the Project Explorer, navigate to the Emulation-SW directory and look for the makefile file. Double-click the file to open it in the editor.  
-     The SDx IDE creates this makefile and uses it for building and running emulations. Alternatively, you can navigate to the Emulation-HW directory and look for the makefile file.  
+  1. [Project Explorer] ビューの [Emulation-SW] ディレクトリで makefile ファイルを見つけます。このファイルをダブルクリックしてエディターで開きます。  
+     この makefile は SDx IDE で作成され、エミュレーションをビルドして実行するのに使用されます。または、[Emulation-HW] ディレクトリで makefile ファイルを見つけます。  
 
-  2. Notice that there is a unique makefile for each build. In the opened makefile in the editor window, look at line 21. Note that it specifies a target if either `hw_emu` or `sw_emu`.   
+  2. ビルドごとに makefile があります。エディター ウィンドウで開いている makefile の 21 行目で、`hw_emu` または `sw_emu` がターゲットとして指定されています。   
 
-     >**:information_source: TIP:**: You can also use the makefile produced by the SDx IDE to build the project outside of the GUI.   
+     >**:information_source: ヒント:** SDx IDE で生成された makefile を使用して、GUI の外でプロジェクトをビルドすることもできます。   
 
-  3. Open up a new terminal session and navigate to the workspace.
+  3. 新しいターミナル セッションを開いて、ワークスペースに移動します。
 
-  4. Navigate to the Emulation-SW directory and type: `make incremental`. The process produces a typical SDx log output.  
+  4. [Emulation-SW] ディレクトリに移動して、「`make incremental`」と入力します。これにより、典型的な SDx のログ出力が生成されます。  
 
-     >**:pushpin: NOTE:** If no changes are made to the host or kernel code, this will do nothing because the compilation is already completed. It will output a warning like: make: Nothing to be done for `incremental'.  
+     >**:pushpin: 注記:** ホストまたはカーネル コードが変更されていない場合は、コンパイルは既に完了しているので何も実行されません。「make: Nothing to be done for 'incremental'」というメッセージが表示されます。  
 
-[Lab 2: Introduction to the SDAccel Makefile](./lab-2-introduction-to-the-sdaccel-makefile.md) goes into more detail on how to use the makefile and command line flow.  
+[演習 2: SDAccel makefile の概要](./lab-2-introduction-to-the-sdaccel-makefile.md)で、makefile の使用方法とコマンド ライン フローをさらに詳細に説明します。  
 </details>
 
-### Summary
+### まとめ
 
 
-After completing this tutorial, you should be able to do the following:  
+このチュートリアルを終了すると、次ができるようになります。  
 
-* Create an SDAccel project from a Github example design.
-* Create a binary container and accelerator for the design.  
-* Run Software Emulation and use the Debug environment on host and kernel code.  
-* Run Hardware Emulation and use the reports to understand possible optimization.  
-* Understand differences between Software and Hardware Emulation reports.  
-* Read the project makefile and run the makefile command line.  
+* GitHub サンプル デザインから SDAccel プロジェクトを作成。
+* デザインのバイナリ コンテナーとアクセラレータを作成。  
+* ソフトウェア エミュレーションを実行し、ホストおよびカーネル コードでデバッグ環境を使用。  
+* ハードウェア エミュレーションを実行し、レポートを使用して可能な最適化を判別。  
+* ソフトウェア エミュレーションとハードウェア エミュレーション レポートの違いを理解。  
+* プロジェクトの makefile を読み込んで、makefile コマンド ラインを実行。  
 
 
   <hr/>

@@ -1,13 +1,14 @@
-<p align="right">
-	別の言語で表示: <a href="../../Japanese-master/getting-started-tutorial/README.md">英語</a>	
-</p>
 
 <table style="width:100%">
   <tr>
 
-<th width="100%" colspan="6"><img src="https://www.xilinx.com/content/dam/xilinx/imgs/press/media-kits/corporate/xilinx-logo.png" width="30%"/><h1>SDAccel 環境チュートリアル: 入門</h2>
+<th width="100%" colspan="6"><img src="https://www.xilinx.com/content/dam/xilinx/imgs/press/media-kits/corporate/xilinx-logo.png" width="30%"/><h1>SDAccel 環境チュートリアル</h2>
 </th>
 
+  </tr>
+  <tr>
+  <td><a href="../../README.md">:house: HOME </a></td>
+    <td colspan="2" align="center"><b>C/C++ カーネル入門</b></td>
   </tr>
   <tr>
      <td align="center">はじめに</td>
@@ -18,7 +19,7 @@
 
 ## はじめに  
 
-このチュートリアルでは、SDx GUI を使用して基本的な OpenCL ベースのデザインをビルドし、パフォーマンスのプロファイリグおよび最適化を実行する手順を説明します。  
+このチュートリアルでは、SDx™ GUI を使用して基本的な OpenCL™ ベースのデザインをビルドし、パフォーマンスのプロファイリグおよび最適化を実行する手順を説明します。  
 
 ### チュートリアル デザインの概要  
 

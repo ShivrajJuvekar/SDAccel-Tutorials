@@ -1,11 +1,12 @@
-<p align="right">
-	別の言語で表示: <a href="../../Japanese-master/getting-started-tutorial/lab-2-introduction-to-the-sdaccel-makefile.md">英語</a>	
-</p>
 <table style="width:100%">
   <tr>
     <th width="100%" colspan="6"><img src="https://www.xilinx.com/content/dam/xilinx/imgs/press/media-kits/corporate/xilinx-logo.png" width="30%"/><h1>SDAccel 環境チュートリアル: 入門</h2>
 </th>
   </tr>
+    <tr>
+    <td><a href="../../README.md">:house: HOME </a></td>
+    <td colspan="2" align="center"><b>C/C++ カーネル入門</b></td>
+  </tr> 
   <tr>
     <td align="center"><a href="README.md">はじめに</td>
     <td align="center"><a href="lab-1-introduction-to-the-sadccel-developmentenvironment.md">演習 1: SDAccel 開発環境の概要</td>
@@ -40,54 +41,66 @@
 
   3. ダウンロードが完了したら、次のコマンドを使用して SDAccel サンプルの `vadd` ディレクトリに移動します。  
      ```
-     cd <workspace>/examples/getting_started/misc/vadd
+     cd <workspace>/examples/getting_started/host/helloworld_c
      ```
 
      このディレクトリで `ls` コマンドを実行し、ファイルを確認します。次のものが含まれているはずです。
      ````
-     [sdaccel@localhost vadd ]$ ls
-     Makefile    README.md    description.json src
+     [sdaccel@localhost helloworld_c]$ ls
+     Makefile    README.md    description.json src utils.mk
      ````
      `src` ディレクトリで `ls` を実行した場合は、次のように表示されます。
      ````
-     [sdaccel@localhost vadd ]$ ls src  
-     host.cpp    krnl_vadd.cl    vadd.h  
+     [sdaccel@localhost helloworld_c]$ ls src  
+     host.cpp    vadd.cpp  
      ````
 </details>
 
 <details>
 <summary><strong>手順 2: 初期デザインおよび makefile の確認</strong></summary>  
 
-  1. vadd ディレクトリには、デザインをハードウェアおよびソフトウェア エミュレーションの両方でコンパイルして、システム run を生成するために使用する makefile ファイルが含まれます。
+  1. helloworld_c ディレクトリには、デザインをハードウェアおよびソフトウェア エミュレーションの両方でコンパイルして、システム実行を生成するために使用する makefile ファイルが含まれます。
 
   2. テキスト エディターで makefile を開きます。内容を確認し、どのように記述されているかを見てみます。makefile は bash 形式の構文で記述されています。  
      >**:pushpin: 注記:** このファイル自体は、すべての GitHub サンプル デザインで使用される汎用 makefile を参照しています。  
 
   3. 最初の数行には、すべてのサンプルで使用されるほかの汎用 makefile の `include` 文が含まれます。  
      ````
-     COMMON_REPO:=../../../  
-     include $(COMMON_REPO)/utility/boards.mk  
-     include $(COMMON_REPO)/libs/xcl2/xcl2.mk  
-     include $(COMMON_REPO)/libs/opencl/opencl.mk  
+     COMMON_REPO = ../../../
+     ABS_COMMON_REPO = $(shell readlink -f $(COMMON_REPO))
+
+     include ./utils.mk
+
      ````
   4. `../../../utility/boards.mk` ファイルを開きます。この makefile には、ホストおよびソース コードをビルドするのに必要なオプションおよびコマンド ライン コンパイラ情報が含まれます。   
      ````
      # By Default report is set to none, no report will be generated  
      # 'estimate' for estimate report generation  
      # 'system' for system report generation  
-     REPORT:=none  
+     REPORT:=none
+     PROFILE ?= no
+     DEBUG ?=no
 
      # Default C++ Compiler Flags and xocc compiler flags  
-     CXXFLAGS:=-Wall -O0 -g  
+     CXXFLAGS:=-Wall -O0 -g -std=c++14
      CLFLAGS:= --xp "param:compiler.preserveHlsOutput=1" --xp "param:compiler.generateExtraRunData=true" -s  
 
      ifneq ($(REPORT),none)  
      CLFLAGS += --report $(REPORT)  
      endif
-     ````
-     `REPORT` は `make` コマンドの入力オプション (パラメーター) です。`CLFLAGS` は使用される `xocc` コマンド ライン オプションをリストします。  
 
-  5. 54 行目までスクロールダウンします。  
+     ifeq ($(PROFILE),yes)
+     CLFLAGS += --profile_kernel data:all:all:all
+     endif
+
+     ifeq ($(DEBUG),yes)
+     CLFLAGS += --dk protocol:all:all:all
+     endif
+
+     ````
+     `REPORT`、`PROFILE`、および `DEBUG` は、`make` コマンドの入力オプション (パラメーター) です。`CLFLAGS` は使用される `xocc` コマンド ライン オプションをリストします。  
+
+  5. 52 行目までスクロールダウンします。  
      ````
         # By default build for hardware can be set to  
         #   hw_emu for hardware emulation  
@@ -113,37 +126,36 @@
 
   1. 次のコマンドを実行して、ソフトウェア エミュレーション用にアプリケーションをコンパイルします。  
      ```
-     make all REPORT=estimate TARGETS=sw_emu DEVICES=xilinx_kcu1500_dynamic_5_0
+     make all REPORT=estimate TARGETS=sw_emu DEVICES=xilinx_u200_xdma_201820_2
      ```  
+     `TARGETS` をこのように定義すると、その値が渡されて、makefile で設定されているデフォルトが上書きされます。
+     
+     次の 4 つのファイルが生成されます。  
 
-     次の 3 つのファイルが生成されます。  
-
-     * vadd (ホスト実行ファイル)  
-     * `xclbin/krnl_vadd.sw_emu.xilinx_kcu1500_dynamic.xclbin` (バイナリ コンテナー)  
+     * host (ホスト実行ファイル)  
+     * `xclbin/vadd.sw_emu.xilinx_u200_xdma_201820_2.xclbin` (バイナリ コンテナー)  
      * システム見積もりレポート
+     * `emconfig.json`
 
      これらのファイルが生成されていることを確認するため、ディレクトリで `ls` コマンドを実行します。次のように表示されるはずです。  
      ```
-      [sdaccel@localhost vadd]$ ls   
+      [sdaccel@localhost helloworld_c]$ ls   
       description.json
       Makefile
       README.md
       src  
-      vadd  
-      _x  this directory contains the logs and reports from the build process.
+      host  
+      _x  (this directory contains the logs and reports from the build process.)
       xclbin  
-      [sdaccel@localhost vadd ]$ ls xclbin/  
-      krnl_vadd.sw_emu.xilinx_kcu1500_dynamic.xclbin  
-      krnl_vadd.sw_emu.xilinx_kcu1500_dynamic.xo
+      [sdaccel@localhost helloworld_c]$ ls xclbin/  
+      vadd.sw_emu.xilinx_u200_xdma_201820_2.xclbin  
+      vadd.sw_emu.xilinx_u200_xdma_201820_2.xo
+      xilinx_u200_xdma_201820_2 (this folder contains the emconfig.json file)
      ```
 
   2. 次のコマンドを実行して、アプリケーションのエミュレーションを実行します。  
      ```
-     emconfigutil --platform xilinx_kcu1500_dynamic_5_0 --nd 1
-     ```
-     `emconfigutil` ツールにより、ターゲット デバイスに関する情報を含む `emconfig.json` ファイルが生成されます。ただし、GitHub リポジトリからは makefile で生成されます。次のコマンドを実行します。
-     ```
-     make check PROFILE=yes TARGETS=sw_emu DEVICES=xilinx_kcu1500_dynamic_5_0
+     make check PROFILE=yes TARGETS=sw_emu DEVICES=xilinx_u200_xdma_201820_2
      ```  
 
      >**:pushpin: 注記:** 指定されている `DEVICES` が手順 1 のコンパイルに使用されたものと同じであることを確認してください。  
@@ -152,43 +164,23 @@
 
   3. アプリケーションの実行に問題がない場合は、ターミナルに次のメッセージが表示されます。  
       ```
-      [sdaccel@localhost vadd]$ make check TARGETS=sw_emu DEVICES=xilinx_kcu1500_dynamic_5_0  
-      <install location>/SDx/2017.4/bin/emconfigutil --platform xilinx_kcu1500_dynamic_5_0 --nd 1  
+      [sdaccel@localhost helloworld_c]$ make check TARGETS=sw_emu DEVICES=xilinx_u200_xdma_201820_2
+      cp -rf ./xclbin/xilinx_u200_xdma_201820_2/emconfig.json .
+      XCL_EMULATION_MODE=sw_emu ./host
+      Found Platform
+      Platform Name: Xilinx
+      XCLBIN File Name: vadd
+      INFO: Importing xclbin/vadd.sw_emu.xilinx_u200_xdma_201820_2.xclbin
+      Loading: 'xclbin/vadd.sw_emu.xilinx_u200_xdma_201820_2.xclbin'
+      TEST PASSED
+      sdx_analyze profile -i sdaccel_profile_summary.csv -f html
+      INFO: Tool Version : 2018.2
+      INFO: Done writing sdaccel_profile_summary.html
 
-      ****** configutil v2017.4 (64-bit)  
-        **** SW Build 2064444 on Sun Nov 19 18:07:27 MST 2017  
-          ** Copyright 1986-2017 Xilinx, Inc. All Rights Reserved.  
-
-      INFO: [ConfigUtil 60-895]    Target platform: <install location>/SDx/2017.4/platforms/xilinx_kcu1500_dynamic_5_0/xilinx_kcu1500_dynamic_5_0.xpfm  
-      emulation configuration file `emconfig.json` is created in current working directory   
-
-      ...  
-      platform Name: Intel(R) OpenCL  
-      Vendor Name : Xilinx  
-      platform Name: Xilinx  
-      Vendor Name : Xilinx  
-      Found Platform  
-      XCLBIN File Name: krnl_vadd  
-      INFO: Importing xclbin/krnl_vadd.sw_emu.xilinx_kcu1500_dynamic.xclbin  
-      Loading: 'xclbin/krnl_vadd.sw_emu.xilinx_kcu1500_dynamic.xclbin'  
-      Result Match: i = 0 CPU result = 0 Krnl Result = 0  
-      Result Match: i = 1 CPU result = 3 Krnl Result = 3  
-      Result Match: i = 2 CPU result = 6 Krnl Result = 6  
-      Result Match: i = 3 CPU result = 9 Krnl Result = 9  
-      Result Match: i = 4 CPU result = 12 Krnl Result = 12  
-      Result Match: i = 5 CPU result = 15 Krnl Result = 15  
-      ...  
-      Result Match: i = 1018 CPU result = 3054 Krnl Result = 3054  
-      Result Match: i = 1019 CPU result = 3057 Krnl Result = 3057  
-      Result Match: i = 1020 CPU result = 3060 Krnl Result = 3060  
-      Result Match: i = 1021 CPU result = 3063 Krnl Result = 3063  
-      Result Match: i = 1022 CPU result = 3066 Krnl Result = 3066  
-      Result Match: i = 1023 CPU result = 3069 Krnl Result = 3069  
-      TEST PASSED  
-     ```
+      ```
 
   4. 追加のレポートを生成するには、環境変数を設定するか、`sdaccel.ini` というファイルを正しい情報と権限で作成する必要があります。
-     このチュートリアルでは、`vadd` ディレクトリに `sdaccel.ini` ファイルを作成して、次の内容を追加します。  
+     このチュートリアルでは、`helloworld_c` ディレクトリに `sdaccel.ini` ファイルを作成して、次の内容を追加します。  
      ```
       [Debug]  
       timeline_trace = true  
@@ -197,7 +189,7 @@
 
   5. 次のコマンドを実行します。  
      ```
-     make check PROFILE=yes TARGETS=sw_emu DEVICES=xilinx_kcu1500_dynamic_5_0
+     make check PROFILE=yes TARGETS=sw_emu DEVICES=xilinx_u200_xdma_201820_2
      ```  
      アプリケーションの実行が終了すると、sdaccel_timeline_trace.csv というタイムライン トレース ファイルも作成されます。このトレース レポートを GUI で確認するには、次のコマンドを使用して CSV ファイルを WDB ファイルに変換します。  
      ```
@@ -212,17 +204,17 @@
      これにより、`sdaccel_profile_summary.xprf` ファイルが生成されます。このレポートを表示するには、SDx IDE を開き、**[File] → [Open File]** をクリックして、ファイルを選択します。次の図に、レポートが表示されたところを示します。  
      >**:pushpin: 注記:** これらのレポートを表示するのに、演習 1 で使用したワークスペースを使用する必要はありません。`sdx -workspace ./lab2` コマンドを使用して、これらのレポートを表示するためのワークスペースをローカルに作成できます。レポートを表示するために、[Welcome] ウィンドウを閉じる必要があることもあります。  
 
-     ![](./images/xci1517374817422.png)  
+     ![](./images/lab2-sw_emu_profile.PNG)  
 
      >**:pushpin: 注記:** ソフトウェア エミュレーションでは、すべてのプロファイル情報が含まれるわけではなく、カーネルとグローバル メモリ間のデータ転送に関する情報は含まれません。この情報は、ハードウェア エミュレーションおよびシステムにのみ含まれます。  
 
   7. システム見積もりレポート (`system_estimate.xtxt`) も生成されます。これは `xocc` コマンドで `--report` オプションを指定してコンパイルすると生成されます。  
-     ![](./images/kkq1517374817434.png)  
+     ![](./images/lab2_sw_emu_sysestimate.PNG)  
 
   8. SDx IDE を起動します。
 
   9. **[File] → [Open File]** をクリックし、`sdaccel_timeline_trace.wdb` ファイルを選択します。次の図に示すようなレポートが表示されます。  
-     ![](./images/rth1517374817491.png)  
+     ![](./images/lab2-sw_emu_timeline.PNG)  
 </details>
 
 <details>
@@ -230,7 +222,7 @@
 
   1. ソフトウェア エミュレーションが終了したので、次はハードウェア シミュレーションを実行します。makefile を変更せずにこれを実行するには、次のコマンドを実行します。  
      ```
-     make all REPORT=estimate TARGETS=hw_emu DEVICES=xilinx_kcu1500_dynamic_5_0
+     make all REPORT=estimate TARGETS=hw_emu DEVICES=xilinx_u200_xdma_201820_2
      ```
      `TARGETS` をこのように定義すると、その値が渡されて、makefile で設定されているデフォルトが上書きされます。  
      >**:pushpin: 注記:** ハードウェア エミュレーションには、ソフトウェア エミュレーションよりも時間がかかります。  
@@ -238,41 +230,29 @@
 
   2. 次のコマンドを使用してホスト アプリケーションを再実行します。  
      ```
-     make check TARGETS=hw_emu DEVICES=xilinx_kcu1500_dynamic_5_0
+     make check TARGETS=hw_emu DEVICES=xilinx_u200_xdma_201820_2
      ```  
      >**:pushpin: 注記:** makefile で環境変数が `hw_emu` に設定されます。  
 
   3. 出力はソフトウェア エミュレーションと類似しており、次のようになります。  
      ```
-      [sdaccel@localhost vadd]$ make check TARGETS=hw_emu DEVICES=xilinx_kcu1500_dynamic_5_0  
-      /<install location>/SDx/<version>/bin/emconfigutil --platform xilinx_kcu1500_dynamic_5_0 --nd 1  
-      ...  
-      INFO: [ConfigUtil 60-895]    Target platform: <install location>/SDx/<version>/platforms/xilinx_kcu1500_dynamic_5_0/xilinx_kcu1500_dynamic_5_0.xpfm  
-      emulation configuration file `emconfig.json` is created in current working directory   
-      ...  
-      platform Name: Intel(R) OpenCL  
-      Vendor Name : Xilinx  
-      platform Name: Xilinx  
-      Vendor Name : Xilinx  
-      Found Platform  
-      XCLBIN File Name: krnl_vadd  
-      INFO: Importing xclbin/krnl_vadd.sw_emu.xilinx_kcu1500_dynamic.xclbin  
-      Loading: 'xclbin/krnl_vadd.sw_emu.xilinx_kcu1500_dynamic.xclbin'  
-      Result Match: i = 0 CPU result = 0 Krnl Result = 0  
-      Result Match: i = 1 CPU result = 3 Krnl Result = 3  
-      Result Match: i = 2 CPU result = 6 Krnl Result = 6  
-      Result Match: i = 3 CPU result = 9 Krnl Result = 9  
-      Result Match: i = 4 CPU result = 12 Krnl Result = 12  
-      Result Match: i = 5 CPU result = 15 Krnl Result = 15  
-      ...  
-      Result Match: i = 1018 CPU result = 3054 Krnl Result = 3054  
-      Result Match: i = 1019 CPU result = 3057 Krnl Result = 3057  
-      Result Match: i = 1020 CPU result = 3060 Krnl Result = 3060  
-      Result Match: i = 1021 CPU result = 3063 Krnl Result = 3063  
-      Result Match: i = 1022 CPU result = 3066 Krnl Result = 3066  
-      Result Match: i = 1023 CPU result = 3069 Krnl Result = 3069  
-      INFO: [SDx-EM 22] [Wall clock time: 10:42, Emulation time: 0.010001 ms]
-      TEST PASSED  
+      [sdaccel@localhost helloworld_c]$ make check TARGETS=hw_emu DEVICES=xilinx_u200_xdma_201820_2
+      cp -rf ./xclbin/xilinx_u200_xdma_201820_2/emconfig.json .
+      XCL_EMULATION_MODE=hw_emu ./host
+      Found Platform
+      Platform Name: Xilinx
+      XCLBIN File Name: vadd
+      INFO: Importing xclbin/vadd.hw_emu.xilinx_u200_xdma_201820_2.xclbin
+      Loading: 'xclbin/vadd.hw_emu.xilinx_u200_xdma_201820_2.xclbin'
+      INFO: [SDx-EM 01] Hardware emulation runs simulation underneath.  Using a large data set will result in long simulation times.  It is recommended that a small dataset is used for faster execution.  This flow does not use cycle accurate models and hence the performance data generated is approximate.
+      TEST PASSED
+      INFO: [SDx-EM 22] [Wall clock time: 00:10, Emulation time: 0.109454 ms] Data transfer between kernel(s) and global memory(s)
+      vadd_1:m_axi_gmem          RD = 32.000 KB              WR = 16.000 KB       
+
+      sdx_analyze profile -i sdaccel_profile_summary.csv -f html
+      INFO: Tool Version : 2018.2
+      Running SDx Rule Check Server on port:40213
+      INFO: Done writing sdaccel_profile_summary.html
      ```
 
   4. 次のコマンドを実行し、プロファイル サマリとタイムライン トレースを SDx IDE で表示できるように変換し、アップデートされた情報を表示します。  
@@ -281,7 +261,7 @@
       sdx_analyze trace sdaccel_timeline_trace.csv  
      ```
      プロファイル サマリは、次の図のようになります。  
-     ![](./images/sdx_makefile_hw_emulation_summary.png)    
+     ![](./images/lab2-hw_emu_profile.PNG)    
 </details>
 
 <details>
@@ -289,14 +269,14 @@
 
   1. 次のコマンドを実行し、システム実行用にコンパイルします。  
      ```
-     make check TARGETS=hw DEVICES=xilinx_kcu1500_dynamic_5_0
+     make all TARGETS=hw DEVICES=xilinx_u200_xdma_201820_2
      ```  
      >**:pushpin: 注記:** システムのビルドには、コンピューター リソースによって時間がかかることがあります。  
 
   2. ビルドが終了したら、次のコマンドを使用してボードのインストールを準備します。  
      ```
-     xbinst --platform xilinx_kcu1500_dynamic_5_0 -z -d
-     ```  
+     xbinst --platform xilinx_u200_xdma_201820_2 -z -d .
+      ```  
      説明:  
      * `--platform`: デザインで使用されるプラットフォーム名を指定します。  
      * `-z`: 運用のためボード インストール ファイルをアーカイブします。  
@@ -307,12 +287,10 @@
   4. setup.sh を実行してランタイム環境を準備します。  
      >**:pushpin: 注記:** setup.sh を実行するには、引き上げられた権限が必要です。  
 
-  5. システム実行が終了したら、必要に応じてこれをエミュレーションで再実行できます。次のコマンドを再実行します。  
+  5. システム実行が終了したら、次のコマンドを再実行できます。  
      ```
-     make check TARGETS=hw_emu DEVICES=xilinx_kcu1500_dynamic_5_0
+     make check TARGETS=hw DEVICES=xilinx_u200_xdma_201820_2
      ```  
-     >**:pushpin: 注記:** `TARGET` を `hw` に設定してこのコマンドを実行すると、プラットフォームの検出でランタイム エラーが発生します。  
-     前の手順と同様、プロファイル サマリ、タイムライン トレース、システム見積もりを示すレポートが生成されます。  
 
 
   6. 次のコマンドを使用して、プロファイル サマリとタイムライン トレースを SDx で読み込むことができるファイルに変換します。

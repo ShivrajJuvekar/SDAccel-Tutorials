@@ -1,5 +1,5 @@
 <p align="right">
-	別の言語で表示: <a href="../../Japanese-master/getting-started-tutorial/README.md">英語</a>	
+	別の言語で表示: <a href="../../master/getting-started-tutorial/README.md">英語</a>	
 </p>
 
 <table style="width:100%">
